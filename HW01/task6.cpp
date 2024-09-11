@@ -4,21 +4,18 @@
 //command line argument code from https://github.com/tsung-wei-huang/repo759/blob/main/FAQ/BestPractices/command_line_arguments.md
 int main(int argc, char *argv[]) {
         
-    // int N = std::atoi(argv[1]);
-    int N = 5;
-
-    int reversed[N+1];
+    int N = std::atoi(argv[1]);
+    // int N = 6;
 
     for(int i = 0; i < N + 1; i++){
-        printf("%i", i);
-        reversed[i] = i;
+        printf("%i ", i);
     }
 
     std::cout << std::endl;
 
     //print backwards
     for(int i = N; i > -1; i--){
-        std::cout << reversed[i];
+        std::cout << i << " ";
     }
     return 0;   
 }
