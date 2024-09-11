@@ -17,6 +17,9 @@ int main(int argc, char *argv[]) {
     for(int i = N; i > -1; i--){
         std::cout << i << " ";
     }
+
+    std::cout << std::endl;
+
     return 0;   
 }
 
