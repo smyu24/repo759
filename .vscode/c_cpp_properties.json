@@ -10,7 +10,7 @@
                 "UNICODE",
                 "_UNICODE"
             ],
-            "compilerPath": ""
+            "compilerPath": "C:/msys64/ucrt64/bin/gcc.exe"
         }
     ],
     "version": 4
