@@ -8,16 +8,15 @@
 // v) Prints the first element of the resulting convolved array.
 // vi) Prints the last element of the resulting convolved array.
 // vii) Deallocates memory when necessary via the delete function.
-// TEST OUT PREINCREMENT FOR CONVOL
 
 #include <iostream>
 #include <cstdlib>
-#include <ctime>
-#include "convolution.cpp"
+#include "convolution.h"
 #include <vector>
 
 #include <chrono>
 #include <ratio>
+#include <random>
 
 int main(int argc, char *argv[])
 {
@@ -42,28 +41,31 @@ int main(int argc, char *argv[])
         return 1;
     }
 
-    std::srand(static_cast<unsigned>(time(0)));
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> dis1(-10.0, 10.0);
+    std::uniform_real_distribution<float> dis2(-1.0, 1.0);
 
-    // HAA
-    std::vector<float> imageMatrix(n*n, 0.0f);
+    std::vector<float> imageMatrix(n * n, 0.0f); // zero init values
 
+    // SAA
     float mask[m * m];
     float output[n * n];
 
     // beyween [-10,10]
     for (int i = 0; i < n; ++i)
     {
-        // generate random float domains: [0,1] + [0,1] then - 1 and save (randomization code inspired from https://www.geeksforgeeks.org/generate-a-random-float-number-in-cpp/#)
-        imageMatrix[i] = (static_cast<float>(rand()) / static_cast<float>(RAND_MAX) + static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) - 1;
-        std::cout << imageMatrix[i] << " " << i << std::endl;
+        // generate random float domains: [-10,10]
+        imageMatrix[i] = dis1(gen);
+        // std::cout << imageMatrix[i] << " " << i << std::endl;
     }
 
     // between [-1,1]
     for (int i = 0; i < m; ++i)
     {
-        // generate random float domains: [0,1] + [0,1] then - 1 and save (randomization code inspired from https://www.geeksforgeeks.org/generate-a-random-float-number-in-cpp/#)
-        mask[i] = ((rand() % (20)) + static_cast<float>(rand()) / static_cast<float>(RAND_MAX)) - 10;
-        std::cout << mask[i] << " " << i << std::endl;
+        // generate random float domains: [-1,1]
+        mask[i] = dis2(gen);
+        // std::cout << mask[i] << " " << i << std::endl;
     }
     // chronos to get time taken to run scan function
     std::chrono::high_resolution_clock::time_point start;
@@ -71,20 +73,13 @@ int main(int argc, char *argv[])
     std::chrono::duration<double, std::milli> duration_sec;
 
     start = std::chrono::high_resolution_clock::now();
-    // convolve(imageMatrix, output, n, mask, m);
+    convolve(imageMatrix.data(), output, n, mask, m);
     end = std::chrono::high_resolution_clock::now();
 
     duration_sec = std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(end - start);
 
     // output delimited by comma
-    // std::cout << duration_sec.count() << ","
-    //           << output[0] << ","
-    //           << output[n] << "," << n << std::endl;
+    std::cout << duration_sec.count() << std::endl
+              << output[0] << std::endl
+              << output[n-1] << std::endl;
 }
-
-//     i) Creates an array of n random float numbers between -1.0 and 1.0. n should be read as the first command line argument as below.
-//     ii) Scans the array using your scan function.
-//     iii) Prints out the time taken by your scan function in milliseconds2.
-//     iv) Prints the first element of the output scanned array.
-//     v) Prints the last element of the output scanned array.
-//     vi) Deallocates memory when necessary.

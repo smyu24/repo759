@@ -26,7 +26,7 @@ int main(int argc, char *argv[])
     std::random_device rd;  
     std::mt19937 gen(rd()); 
     std::uniform_real_distribution<float> dis(-1.0, 1.0); 
-    
+
     // SAA
     float arrayOfNums[n];
     float output[n];
@@ -42,15 +42,15 @@ int main(int argc, char *argv[])
     std::chrono::high_resolution_clock::time_point end;
     std::chrono::duration<double, std::milli> duration_sec;
 
-    start = std::chrono::high_resolution_clock::now();
     // use chronos to get scan function runtime to accuracy of millisecond
+    start = std::chrono::high_resolution_clock::now();
     scan(arrayOfNums, output, n);
     end = std::chrono::high_resolution_clock::now();
 
     duration_sec = std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(end - start);
-    // output delimited by comma
-    std::cout << duration_sec.count() << ","
-              << output[0] << ","
+    
+    std::cout << duration_sec.count() << std::endl
+              << output[0] << std::endl
               << output[n-1] << std::endl;
 
     // no mem to dealloc
