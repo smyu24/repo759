@@ -21,7 +21,7 @@
 int main(int argc, char *argv[])
 {
     // argc == 3 for n and m
-    if (argc < 3)
+    if (argc != 3)
     {
         return 1;
     }
@@ -78,7 +78,6 @@ int main(int argc, char *argv[])
 
     duration_sec = std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(end - start);
 
-    // output delimited by comma
     std::cout << duration_sec.count() << std::endl
               << output[0] << std::endl
               << output[n-1] << std::endl;

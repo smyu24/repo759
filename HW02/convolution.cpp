@@ -22,13 +22,13 @@ void convolve(const float *image, float *output, std::size_t n, const float *mas
             {
                 for (size_t j = 0; j <= m - 1; j++)
                 {
-                    int xValue = static_cast<int>(x) + static_cast<int>(i) - ((m - 1) / 2); // x+i-(m-1)/2
-                    int yValue = static_cast<int>(y) + static_cast<int>(j) - ((m - 1) / 2); // y+j-(m-1)/2
+                    int iValue = static_cast<int>(x) + static_cast<int>(i) - ((m - 1) / 2); // x+i-(m-1)/2
+                    int jValue = static_cast<int>(y) + static_cast<int>(j) - ((m - 1) / 2); // y+j-(m-1)/2
 
                     // if there exists a condition that is not satisfied
-                    if (xValue < 0 || xValue >= static_cast<int>(n) || yValue < 0 || yValue >= static_cast<int>(n))
+                    if (iValue < 0 || iValue >= static_cast<int>(n) || jValue < 0 || jValue >= static_cast<int>(n))
                     {
-                        if ((xValue < 0 || xValue >= static_cast<int>(n)) && (yValue < 0 || yValue >= static_cast<int>(n)))
+                        if ((iValue < 0 || iValue >= static_cast<int>(n)) && (jValue < 0 || jValue >= static_cast<int>(n)))
                         {
                             // corner case (both condition failed)
                             f = 0.0;
@@ -42,7 +42,7 @@ void convolve(const float *image, float *output, std::size_t n, const float *mas
                     else
                     {
                         // f[x+i-(m-1)/2,y+i-(m-1)/2]
-                        f = image[xValue * n + yValue];
+                        f = image[iValue * n + jValue];
                     }
                     w = mask[i * m + j]; // w[i, j]
                     convolutionResult += f * w;
