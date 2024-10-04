@@ -35,6 +35,13 @@ A and B are 1D arrays storing the matrices in row-major order.
 }
 void mmul2(const double *A, const double *B, double *C, const unsigned int n)
 {
+    // Initialize C to zero
+    for (size_t i = 0; i < n; i++) {
+        for (size_t j = 0; j < n; j++) {
+            C[i * n + j] = 0;
+        }
+    }
+
     for (size_t i = 0; i < n; i++)
     {
         for (size_t k = 0; k < n; k++)
@@ -58,6 +65,13 @@ they now become (i,k,j)). That is the only difference between mmul1 and mmul2.
 }
 void mmul3(const double *A, const double *B, double *C, const unsigned int n)
 {
+    // Initialize C to zero
+    for (size_t i = 0; i < n; i++) {
+        for (size_t j = 0; j < n; j++) {
+            C[i * n + j] = 0;
+        }
+    }
+    
     for (size_t j = 0; j < n; j++)
     {
         for (size_t k = 0; k < n; k++)
@@ -80,6 +94,13 @@ That is the only difference between mmul1 and mmul3.
 }
 void mmul4(const std::vector<double> &A, const std::vector<double> &B, double *C, const unsigned int n)
 {
+    // Initialize C to zero
+    for (size_t i = 0; i < n; i++) {
+        for (size_t j = 0; j < n; j++) {
+            C[i * n + j] = 0;
+        }
+    }
+
     // sweeps i through rows of C
     for (size_t i = 0; i < n; i++)
     {
@@ -90,7 +111,7 @@ void mmul4(const std::vector<double> &A, const std::vector<double> &B, double *C
             // carry out the dot product of the ith row, jth column,
             for (size_t k = 0; k < n; k++)
             {
-                *(C + i * n + j) += A[i * n + k] * B[k * n + j]; // (*(A + i * n + k)) * (*(B + k * n + j));
+                C[i * n + j] += A[i * n + k] * B[k * n + j]; // (*(A + i * n + k)) * (*(B + k * n + j));
                 // C += A X B
                 // increments C_ij
             }

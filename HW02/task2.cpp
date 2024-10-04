@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
     }
 
     // m must be odd number
-    if ((m - 1) / 2 % 1)
+    if (m % 2 == 0)
     {
         return 1;
     }
@@ -80,5 +80,5 @@ int main(int argc, char *argv[])
 
     std::cout << duration_sec.count() << std::endl
               << output[0] << std::endl
-              << output[n-1] << std::endl;
+              << output[n*n-1] << std::endl;
 }
