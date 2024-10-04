@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
     float output[n * n];
 
     // beyween [-10,10]
-    for (int i = 0; i < n; ++i)
+    for (int i = 0; i < n * n; ++i)
     {
         // generate random float domains: [-10,10]
         imageMatrix[i] = dis1(gen);
@@ -61,7 +61,7 @@ int main(int argc, char *argv[])
     }
 
     // between [-1,1]
-    for (int i = 0; i < m; ++i)
+    for (int i = 0; i < m * m; ++i)
     {
         // generate random float domains: [-1,1]
         mask[i] = dis2(gen);
