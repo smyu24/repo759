@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
     int m = 3;
 
     // n and m must be a positive integer
-    if (n <= 0 && t <= 0)
+    if (n <= 0 || t <= 0)
     {
         return 1;
     }
@@ -69,8 +69,8 @@ int main(int argc, char *argv[])
         end = std::chrono::high_resolution_clock::now();
         duration_sec = std::chrono::duration_cast<std::chrono::duration<double, std::milli>>(end - start);
 
-        std::cout << duration_sec.count() << std::endl
-              << output[0] << std::endl
-              << output[n * n - 1] << std::endl;
+        std::cout << output[0] << std::endl
+              << output[n * n - 1] << std::endl
+              << duration_sec.count() << std::endl;
     }
 }
