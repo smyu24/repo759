@@ -7,6 +7,7 @@
 #include <chrono>
 #include <random>
 #include <cstring>
+#include <omp.h>
 
 using std::chrono::duration;
 using std::chrono::high_resolution_clock;
@@ -24,9 +25,9 @@ void getAcc(const double pos[][3], const double mass[], double acc[][3], int N)
     double dx, dy, dz, inv_r3;
     std::memset(acc, 0, N * 3 * sizeof(double));
 
-    // number of rows for N is given
-    // acc is also given
-
+// number of rows for N is given
+// acc is also given
+#pragma omp parallel for schedule(runtime) private(dx, dy, dz, inv_r3)
     for (int i = 0; i < N; i++)
     {
         for (int j = 0; j < N; j++)
@@ -111,7 +112,7 @@ int main(int argc, char *argv[])
     start = high_resolution_clock::now();
 
     // Check if correct number of arguments are provided
-    if (argc != 3)
+    if (argc != 5)
     {
         std::cerr << "Usage: " << argv[0] << " <number_of_particles> <simulation_end_time>" << std::endl;
         return 1;
@@ -120,6 +121,20 @@ int main(int argc, char *argv[])
     // Read N and tEnd from command line
     int N = std::stoi(argv[1]);       // Number of particles
     double tEnd = std::stod(argv[2]); // Time at which simulation ends
+    int num_threads = std::stoi(argv[3]);
+    int schedule_type = std::stoi(argv[4]);
+    // 1:"static", 2:"dynamic", 3:"guided"
+
+    omp_set_num_threads(num_threads);
+    if (schedule_type == 1) {
+        omp_set_schedule(omp_sched_static, 0);
+    } else if (schedule_type == 2) {
+        omp_set_schedule(omp_sched_dynamic, 0);
+    } else if (schedule_type == 3) {
+        omp_set_schedule(omp_sched_guided, 0);
+    } else {
+        return 1;
+    }
 
     // File to save positions
     std::string filename = "positions.csv";
@@ -192,6 +207,7 @@ int main(int argc, char *argv[])
     {
 
         // TODO: (1/2) kick
+        #pragma omp parallel for schedule(runtime)
         for (int i = 0; i < N; i++)
         {
             vel[i][0] += acc[i][0] * dt / 2.0;
@@ -201,6 +217,7 @@ int main(int argc, char *argv[])
 
         // TODO: Drift
         // TODO: Ensure particles stay within the board limits
+        #pragma omp parallel for schedule(runtime)
         for (int i = 0; i < N; i++)
         {
             pos[i][0] += vel[i][0] * dt;
@@ -220,6 +237,7 @@ int main(int argc, char *argv[])
         getAcc(pos, mass, acc, N);
 
         // TODO: (1/2) kick
+        #pragma omp parallel for schedule(runtime)
         for (int i = 0; i < N; i++)
         {
             vel[i][0] += acc[i][0] * dt / 2.0;
@@ -231,7 +249,7 @@ int main(int argc, char *argv[])
         t += dt;
 
         // For debug: save positions to CSV at each step
-        savePositionsToCSV(pos, N, step, filename);
+        // savePositionsToCSV(pos, N, step, filename);
     }
 
     // Clean up dynamically allocated memory
