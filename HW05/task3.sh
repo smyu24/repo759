@@ -15,5 +15,6 @@ nvcc task3.cu vscale.cu -Xcompiler -O3 -Xcompiler -Wall -Xptxas -O3 -std=c++17 -
 ./task3 5
 
 for (( t = 10; t <= 29; t++ )); do
-    ./task3 ${t} >> timing_results.txt
+    ts=$((2**t))
+    ./task3 ${ts} >> timing_results.txt
 done 
